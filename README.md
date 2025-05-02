@@ -21,7 +21,7 @@ Enforces 1ms thread scheduler updating in-game (0.9.0-1.0.2 bugfix)
 Can launch the game in a higher-than-normal priority level
 </p>
 <p align="center">
-Can launch the game in single-CPU mode
+Capable of restricting ITGmania to a single CPU core
 </p>
 <p align="center">
 Can patch out the version check in any Simply Love-based theme
