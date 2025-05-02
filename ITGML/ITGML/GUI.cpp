@@ -88,17 +88,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		}
 
 		// Save settings to the registry
-		HKEY hKey;
-		if (RegCreateKeyExW(HKEY_CURRENT_USER, REGISTRY_KEY, 0, nullptr, 0, KEY_WRITE, nullptr, &hKey, nullptr) == ERROR_SUCCESS) {
-			DWORD priorityBoosterValue = priorityBooster ? 1 : 0;
-			DWORD restrictToSingleCPUValue = restrictToSingleCPU ? 1 : 0;
-
-			RegSetValueExW(hKey, L"PriorityBooster", 0, REG_DWORD, reinterpret_cast<const BYTE*>(&priorityBoosterValue), sizeof(priorityBoosterValue));
-			RegSetValueExW(hKey, L"RestrictToSingleCPU", 0, REG_DWORD, reinterpret_cast<const BYTE*>(&restrictToSingleCPUValue), sizeof(restrictToSingleCPUValue));
-
-			RegCloseKey(hKey);
-		}
-		else {
+		if(!SaveSettingsToRegistry()) {
 			MessageBoxW(hWnd, L"Failed to save settings to the registry.", L"Error", MB_OK | MB_ICONERROR);
 		}
 		break;
