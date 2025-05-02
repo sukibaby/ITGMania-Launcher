@@ -16,6 +16,7 @@ constexpr DWORD DWORD_TRUE = 1;
 constexpr int WINDOW_WIDTH = 250;
 constexpr int WINDOW_HEIGHT = 350;
 
+//TODO: clean these up...
 HINSTANCE hInst = nullptr;
 wchar_t szTitle[MAX_LOADSTRING] = L"";
 wchar_t szWindowClass[MAX_LOADSTRING] = L"";
