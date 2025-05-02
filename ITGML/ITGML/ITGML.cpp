@@ -10,13 +10,11 @@
 #include <shlobj.h>  // For SHBrowseForFolder and SHGetPathFromIDList
 #pragma comment(lib, "winmm.lib")
 
-// Constants
 constexpr DWORD DWORD_FALSE = 0;
 constexpr DWORD DWORD_TRUE = 1;
 constexpr int WINDOW_WIDTH = 250;
 constexpr int WINDOW_HEIGHT = 350;
 
-// Global Variables
 HINSTANCE hInst = nullptr;
 wchar_t szTitle[MAX_LOADSTRING] = L"";
 wchar_t szWindowClass[MAX_LOADSTRING] = L"";
@@ -28,9 +26,6 @@ DWORD priorityBoosterValue = DWORD_FALSE;
 DWORD restrictToSingleCPUValue = DWORD_FALSE;
 DWORD dataSize = sizeof(DWORD);
 
-/*****************************************************************/
-/************************** Entry Point **************************/
-/*****************************************************************/
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR lpCmdLine,
@@ -52,7 +47,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    // Load accelerators and start the message loop
+    // Start the message loop
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_ITGML));
     MSG msg;
 
@@ -66,9 +61,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return static_cast<int>(msg.wParam);
 }
 
-/*****************************************************************/
-/************************** Window Class *************************/
-/*****************************************************************/
 ATOM MyRegisterClass(HINSTANCE hInstance) {
     WNDCLASSEXW wcex = {};
 
@@ -88,9 +80,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
     return RegisterClassExW(&wcex);
 }
 
-/*****************************************************************/
-/************************** Instance Init ************************/
-/*****************************************************************/
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
     hInst = hInstance;
 
@@ -143,7 +132,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
         CHECKBOX_WIDTH, CHECKBOX_HEIGHT,
         hWnd, reinterpret_cast<HMENU>(CMD_RESTRICT_CPU), hInstance, nullptr);
 
-    // Set the initial state of the checkboxes based on the loaded settings
+    // Set the initial state of the checkboxes based on the registry values
     SendMessageW(hBoostPriorityCheckbox, BM_SETCHECK, priorityBooster ? BST_CHECKED : BST_UNCHECKED, 0);
     SendMessageW(hRestrictCPUCheckbox, BM_SETCHECK, restrictToSingleCPU ? BST_CHECKED : BST_UNCHECKED, 0);
 
@@ -153,9 +142,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
     return TRUE;
 }
 
-/*****************************************************************/
-/************************ Helper Functions ***********************/
-/*****************************************************************/
 void LoadSettingsFromRegistry() {
     HKEY hKey;
     if (RegOpenKeyExW(HKEY_CURRENT_USER, REGISTRY_KEY, 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
