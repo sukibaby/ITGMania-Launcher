@@ -5,7 +5,7 @@
 Windows launcher for ITGmania with extra functionality.
 </p>
 <p align="center">
-  <i>should also be compatible with StepMania 5; but not actively tested with that.</i>
+  <i>(should also be compatible with StepMania 5; but not actively tested with that.)</i>
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/2f221268-ac8c-4b84-bd1f-a42e75a02255" alt="image">
