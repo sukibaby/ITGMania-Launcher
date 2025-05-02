@@ -6,6 +6,13 @@
 #include <windows.h>
 #include <string>
 
+// Case Identifiers. UINT_PTR is used for HMENU compatibility
+constexpr UINT_PTR CMD_BROWSE_EXECUTABLE = 1;  // Browse for Executable
+constexpr UINT_PTR CMD_LAUNCH_ITGMANIA = 2;    // Launch ITGmania
+constexpr UINT_PTR CMD_BOOST_PRIORITY = 6;     // Boost game priority
+constexpr UINT_PTR CMD_PATCH_SL_VER = 7;       // Patch SL version check
+constexpr UINT_PTR CMD_RESTRICT_CPU = 8;       // Restrict to single CPU
+
 // Constants
 #define REGISTRY_KEY L"SOFTWARE\\ITGML"
 #define REGISTRY_VALUE_NAME L"ExecutablePath"

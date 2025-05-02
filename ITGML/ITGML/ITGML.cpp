@@ -97,22 +97,22 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		centerX - (BUTTON_WIDTH / 2), 50,
 		BUTTON_WIDTH, BUTTON_HEIGHT,
-		hWnd, reinterpret_cast<HMENU>(1), hInstance, nullptr);
+		hWnd, (HMENU)CMD_BROWSE_EXECUTABLE, hInstance, nullptr);
 
 	CreateWindowW(L"BUTTON", L"Launch ITGmania",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		centerX - (BUTTON_WIDTH / 2), 90,
 		BUTTON_WIDTH, BUTTON_HEIGHT,
-		hWnd, reinterpret_cast<HMENU>(2), hInstance, nullptr);
+		hWnd, (HMENU)CMD_LAUNCH_ITGMANIA, hInstance, nullptr);
 
 	CreateWindowW(L"BUTTON", L"Patch SL ver. check",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		centerX - (BUTTON_WIDTH / 2), 130,
 		BUTTON_WIDTH, BUTTON_HEIGHT,
-		hWnd, reinterpret_cast<HMENU>(7), hInstance, nullptr);
+		hWnd, (HMENU)CMD_PATCH_SL_VER, hInstance, nullptr);
 
-	CreateCheckbox(hWnd, hInstance, 6, getYPosition(), L"Boost game priority");
-	CreateCheckbox(hWnd, hInstance, 8, getYPosition(), L"Restrict to single CPU");
+	CreateCheckbox(hWnd, hInstance, CMD_BOOST_PRIORITY, getYPosition(), L"Boost game priority");
+	CreateCheckbox(hWnd, hInstance, CMD_RESTRICT_CPU, getYPosition(), L"Restrict to single CPU");
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
@@ -153,18 +153,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_COMMAND: {
 		int wmId = LOWORD(wParam);
 		switch (wmId) {
-		case 1:
+		case CMD_BROWSE_EXECUTABLE:
 			BrowseForExecutable(hWnd);
 			break;
-		case 2:
+		case CMD_LAUNCH_ITGMANIA:
 			LaunchITGmania();
 			break;
-		case 6: {
+		case CMD_BOOST_PRIORITY: {
 			LRESULT state = SendMessage(GetDlgItem(hWnd, 6), BM_GETCHECK, 0, 0);
 			selectedPriority = (state == BST_CHECKED) ? REALTIME_PRIORITY_CLASS : NORMAL_PRIORITY_CLASS;
 			break;
 		}
-		case 7:
+		case CMD_PATCH_SL_VER:
 			if (wcslen(selectedExePath) > 0) {
 				SpoofExecutableVersion(selectedExePath);
 			}
@@ -172,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 				MessageBox(hWnd, L"Please select an executable first.", L"Error", MB_OK | MB_ICONERROR);
 			}
 			break;
-		case 8: {
+		case CMD_RESTRICT_CPU: {
 			LRESULT state = SendMessage(GetDlgItem(hWnd, 8), BM_GETCHECK, 0, 0);
 			if (state == BST_CHECKED) {
 				restrictToSingleCPU = true;
