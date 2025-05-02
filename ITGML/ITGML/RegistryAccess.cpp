@@ -3,8 +3,6 @@
 #include <windows.h>
 #include <winreg.h>
 
-
-// External variables (if needed)
 extern bool priorityBooster;
 extern bool restrictToSingleCPU;
 extern DWORD priorityBoosterValue;
