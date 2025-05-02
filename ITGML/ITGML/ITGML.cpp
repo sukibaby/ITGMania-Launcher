@@ -26,15 +26,6 @@
 #define CHECKBOX_SPACING 10
 
 /*****************************************************************/
-/*********************** Global Variables ************************/
-/*****************************************************************/
-HINSTANCE hInst;
-WCHAR szTitle[MAX_LOADSTRING];
-WCHAR szWindowClass[MAX_LOADSTRING];
-WCHAR selectedExePath[MAX_PATH] = L"";
-int selectedPriority = NORMAL_PRIORITY_CLASS;
-
-/*****************************************************************/
 /************************** Entry Point **************************/
 /*****************************************************************/
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

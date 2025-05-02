@@ -12,11 +12,12 @@
 #define MAX_LOADSTRING 100
 
 // Global Variables
-extern HINSTANCE hInst;
-extern WCHAR szTitle[MAX_LOADSTRING];
-extern WCHAR szWindowClass[MAX_LOADSTRING];
-extern WCHAR selectedExePath[MAX_PATH];
-extern int selectedPriority;
+HINSTANCE hInst;
+WCHAR szTitle[MAX_LOADSTRING];
+WCHAR szWindowClass[MAX_LOADSTRING];
+WCHAR selectedExePath[MAX_PATH] = L"";
+int selectedPriority = NORMAL_PRIORITY_CLASS;
+bool restrictToSingleCPU = false;
 
 // Function Declarations
 int getYPosition();
