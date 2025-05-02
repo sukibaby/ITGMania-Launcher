@@ -31,6 +31,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		RECT textRect = { 0, 0, rect.right, 50 };
 		DrawTextW(hdc, titleText, -1, &textRect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 
+		// Create a smaller font for the footer text
+		HFONT hFooterFont = CreateFontW(
+			-10, 0, 0, 0, FW_LIGHT, FALSE, FALSE, FALSE,
+			DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+			CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+			DEFAULT_PITCH | FF_DONTCARE, L""
+		);
+
+		SelectObject(hdc, hFooterFont);
+		const wchar_t* footerText = L"github.com/sukibaby/ITGmania-Launcher";
+		RECT footerRect = { 0, rect.bottom - 50, rect.right, rect.bottom };
+		DrawTextW(hdc, footerText, -1, &footerRect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+
 		SelectObject(hdc, hOldFont);
 		EndPaint(hWnd, &ps);
 		break;
