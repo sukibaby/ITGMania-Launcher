@@ -81,6 +81,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
     return RegisterClassExW(&wcex);
 }
 
+#define CREATE_BUTTON(text, x, y, width, height, parent, id, instance) \
+    CreateWindowW(L"BUTTON", text, WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, \
+                  x, y, width, height, parent, reinterpret_cast<HMENU>(id), instance, nullptr)
+
+#define CREATE_CHECKBOX(text, x, y, width, height, parent, id, instance) \
+    CreateWindowW(L"BUTTON", text, WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX, \
+                  x, y, width, height, parent, reinterpret_cast<HMENU>(id), instance, nullptr)
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
     hInst = hInstance;
 
@@ -102,36 +110,23 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
     int centerX = (rect.right - rect.left) / 2;
 
     // Create buttons
-    CreateWindowW(L"BUTTON", L"Browse for Executable",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-        centerX - (BUTTON_WIDTH / 2), 50,
-        BUTTON_WIDTH, BUTTON_HEIGHT,
-        hWnd, reinterpret_cast<HMENU>(CMD_BROWSE_EXECUTABLE), hInstance, nullptr);
+    CREATE_BUTTON(L"Browse for Executable", centerX - (BUTTON_WIDTH / 2), 50,
+        BUTTON_WIDTH, BUTTON_HEIGHT, hWnd, CMD_BROWSE_EXECUTABLE, hInstance);
 
-    CreateWindowW(L"BUTTON", L"Launch ITGmania",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-        centerX - (BUTTON_WIDTH / 2), 90,
-        BUTTON_WIDTH, BUTTON_HEIGHT,
-        hWnd, reinterpret_cast<HMENU>(CMD_LAUNCH_ITGMANIA), hInstance, nullptr);
+    CREATE_BUTTON(L"Launch ITGmania", centerX - (BUTTON_WIDTH / 2), 90,
+        BUTTON_WIDTH, BUTTON_HEIGHT, hWnd, CMD_LAUNCH_ITGMANIA, hInstance);
 
-    CreateWindowW(L"BUTTON", L"Patch SL ver. check",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-        centerX - (BUTTON_WIDTH / 2), 130,
-        BUTTON_WIDTH, BUTTON_HEIGHT,
-        hWnd, reinterpret_cast<HMENU>(CMD_PATCH_SL_VER), hInstance, nullptr);
+    CREATE_BUTTON(L"Patch SL ver. check", centerX - (BUTTON_WIDTH / 2), 130,
+        BUTTON_WIDTH, BUTTON_HEIGHT, hWnd, CMD_PATCH_SL_VER, hInstance);
 
     // Create checkboxes
-    HWND hBoostPriorityCheckbox = CreateWindowW(L"BUTTON", L"Boost game priority",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX,
+    HWND hBoostPriorityCheckbox = CREATE_CHECKBOX(L"Boost game priority",
         (WINDOW_WIDTH - CHECKBOX_WIDTH) / 2, getYPosition(),
-        CHECKBOX_WIDTH, CHECKBOX_HEIGHT,
-        hWnd, reinterpret_cast<HMENU>(CMD_BOOST_PRIORITY), hInstance, nullptr);
+        CHECKBOX_WIDTH, CHECKBOX_HEIGHT, hWnd, CMD_BOOST_PRIORITY, hInstance);
 
-    HWND hRestrictCPUCheckbox = CreateWindowW(L"BUTTON", L"Restrict to single CPU",
-        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX,
+    HWND hRestrictCPUCheckbox = CREATE_CHECKBOX(L"Restrict to single CPU",
         (WINDOW_WIDTH - CHECKBOX_WIDTH) / 2, getYPosition(),
-        CHECKBOX_WIDTH, CHECKBOX_HEIGHT,
-        hWnd, reinterpret_cast<HMENU>(CMD_RESTRICT_CPU), hInstance, nullptr);
+        CHECKBOX_WIDTH, CHECKBOX_HEIGHT, hWnd, CMD_RESTRICT_CPU, hInstance);
 
     // Set the initial state of the checkboxes based on the registry values
     SendMessageW(hBoostPriorityCheckbox, BM_SETCHECK, priorityBooster ? BST_CHECKED : BST_UNCHECKED, 0);
