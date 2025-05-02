@@ -17,6 +17,10 @@ constexpr UINT_PTR CMD_RESTRICT_CPU = 8;       // Restrict to single CPU
 #define REGISTRY_KEY L"SOFTWARE\\ITGML"
 #define REGISTRY_VALUE_NAME L"ExecutablePath"
 #define MAX_LOADSTRING 100
+#define BUTTON_WIDTH 200
+#define BUTTON_HEIGHT 30
+#define CHECKBOX_WIDTH 200
+#define CHECKBOX_HEIGHT 30
 
 // Global Variables
 extern HINSTANCE hInst;
@@ -27,22 +31,16 @@ extern int selectedPriority;
 extern bool restrictToSingleCPU;
 extern bool priorityBooster;
 
-// Function Declarations
-void CreateCheckbox(HWND hWnd, HINSTANCE hInstance, int id, int yPos, LPCWSTR text);
-//void SpoofExecutableVersion(const std::wstring& exePath);
-void LoadSettingsFromRegistry();
-
 // Entry Point
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow);
 
 // GUI Functions
 ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
+void CreateCheckbox(HWND hWnd, HINSTANCE hInstance, int id, int yPos, LPCWSTR text);
+void LoadSettingsFromRegistry();
 
-// Executable Modifiers
-//void BrowseForExecutable(HWND hWnd);
-//void LaunchITGmania();
-
+// Provides a y-position relative to the last created checkbox
 inline int getYPosition() {
 	static int initialOffset = 155;
 	return initialOffset += 30;
