@@ -270,6 +270,10 @@ void LaunchITGmania() {
     }
 
 	// Handle anything we wanted to wait for until after the game was launched
+	    if (restrictToSingleCPU)
+    {
+        SetProcessAffinityMask(sei.hProcess, 1);
+    }
     SetPriorityClass(sei.hProcess, selectedPriority);
     WaitForSingleObject(sei.hProcess, INFINITE);
     CloseHandle(sei.hProcess);
