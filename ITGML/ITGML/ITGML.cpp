@@ -82,7 +82,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	hInst = hInstance;
 
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, 250, 400,
+		CW_USEDEFAULT, 0, 250, 350,
 		nullptr, nullptr, hInstance, nullptr);
 
 	if (!hWnd) {
