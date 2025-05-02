@@ -128,12 +128,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="ITGML.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tweaks.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="ITGML.cpp" />
+    <ClCompile Include="Tweaks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ITGML.rc" />

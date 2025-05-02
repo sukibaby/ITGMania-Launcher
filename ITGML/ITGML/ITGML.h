@@ -19,16 +19,17 @@ constexpr UINT_PTR CMD_RESTRICT_CPU = 8;       // Restrict to single CPU
 #define MAX_LOADSTRING 100
 
 // Global Variables
-HINSTANCE hInst;
-WCHAR szTitle[MAX_LOADSTRING];
-WCHAR szWindowClass[MAX_LOADSTRING];
-WCHAR selectedExePath[MAX_PATH] = L"";
-int selectedPriority = NORMAL_PRIORITY_CLASS;
+extern HINSTANCE hInst;
+extern wchar_t szTitle[MAX_LOADSTRING];
+extern wchar_t szWindowClass[MAX_LOADSTRING];
+extern wchar_t selectedExePath[MAX_PATH];
+extern int selectedPriority;
+extern bool restrictToSingleCPU;
+extern bool priorityBooster;
 
 // Function Declarations
-int getYPosition();
 void CreateCheckbox(HWND hWnd, HINSTANCE hInstance, int id, int yPos, LPCWSTR text);
-void SpoofExecutableVersion(const std::wstring& exePath);
+//void SpoofExecutableVersion(const std::wstring& exePath);
 void LoadSettingsFromRegistry();
 
 // Entry Point
@@ -37,8 +38,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 // GUI Functions
 ATOM MyRegisterClass(HINSTANCE hInstance);
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 // Executable Modifiers
-void BrowseForExecutable(HWND hWnd);
-void LaunchITGmania();
+//void BrowseForExecutable(HWND hWnd);
+//void LaunchITGmania();
+
+inline int getYPosition() {
+	static int initialOffset = 155;
+	return initialOffset += 30;
+}
