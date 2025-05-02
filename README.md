@@ -8,11 +8,12 @@ Windows launcher for ITGmania with extra functionality.
   <i>(should also be compatible with StepMania 5; but not actively tested with that.)</i>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/5c8e903e-1452-4c33-98f2-3a681cc01ad3" alt="image">
+<img src="https://github.com/user-attachments/assets/74758a0e-4cf4-475f-a043-dfb5e686b6d6" alt="image">
 </p>
 
 <p align="center">
 <b>Features:</b>
+
 </p>
 <p align="center">
 Enforces 1ms thread scheduler updating in-game (0.9.0-1.0.2 bugfix)
