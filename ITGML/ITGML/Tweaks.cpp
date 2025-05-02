@@ -6,7 +6,6 @@
 #include <iostream>
 #include <commdlg.h>
 #include <mmsystem.h> // for timeBeginPeriod
-#pragma comment(lib, "winmm.lib")
 #include <winreg.h>
 #include <string>
 #include <fstream>

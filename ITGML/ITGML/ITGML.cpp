@@ -7,9 +7,7 @@
 #include "GUI.h"
 #include "RegistryAccess.h"
 #include <windows.h>
-#include <winreg.h>
 #include <shlobj.h>  // For SHBrowseForFolder and SHGetPathFromIDList
-#pragma comment(lib, "winmm.lib")
 
 constexpr DWORD DWORD_FALSE = 0;
 constexpr DWORD DWORD_TRUE = 1;

@@ -1,7 +1,6 @@
 #include "ITGML.h"
 #include "Tweaks.h"
 #include <windows.h>
-#include <winreg.h>
 #pragma comment(lib, "winmm.lib")
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
