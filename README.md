@@ -8,7 +8,7 @@ Windows launcher for ITGmania with extra functionality.
   <i>(should also be compatible with StepMania 5; but not actively tested with that.)</i>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/2f221268-ac8c-4b84-bd1f-a42e75a02255" alt="image">
+<img src="https://github.com/user-attachments/assets/5c8e903e-1452-4c33-98f2-3a681cc01ad3" alt="image">
 </p>
 
 <p align="center">
@@ -19,6 +19,9 @@ Enforces 1ms thread scheduler updating in-game (0.9.0-1.0.2 bugfix)
 </p>
 <p align="center">
 Can launch the game in a higher-than-normal priority level
+</p>
+<p align="center">
+Can launch the game in single-CPU mode
 </p>
 <p align="center">
 Can patch out the version check in any Simply Love-based theme
