@@ -5,7 +5,7 @@
 Windows launcher for ITGmania with extra functionality.
 </p>
 <p align="center">
-  <i>(should also be compatible with StepMania 5; but not actively tested with that.)</i>
+  <i>(also compatible with StepMania 5; but not actively tested with that.)</i>
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/74758a0e-4cf4-475f-a043-dfb5e686b6d6" alt="image">
@@ -29,4 +29,7 @@ Can patch out the version check in any Simply Love-based theme
 </p>
 <p align="center">
 Remembers your last used ITGmania EXE, for people who have lots of different build EXE's
+</p>
+<p align="center">
+Prevents a crash on exit when using the "X" button
 </p>
