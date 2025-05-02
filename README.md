@@ -15,7 +15,7 @@ Windows launcher for ITGmania with extra functionality.
 <b>Features:</b>
 </p>
 <p align="center">
-Enforces 1ms thread scheduler updating in-game
+Enforces 1ms thread scheduler updating in-game (0.9.0-1.0.2 bugfix)
 </p>
 <p align="center">
 Can launch the game in a higher-than-normal priority level
