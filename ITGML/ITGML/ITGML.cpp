@@ -47,10 +47,17 @@ INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 #include <fstream>
 #include <shlobj.h> // For SHBrowseForFolder and SHGetPathFromIDList
 
+/* the purpose of this function is to remove the version check in any simply love
+ * based theme.  it looks for the line containing the minimumversion variable
+ * and overwrites it with a value of 0.0.1.  this allows the older exe to use
+ * a newer version of the theme. */
+LPCWSTR targetLine = L"This will patch out the version check in any Simply Love theme.\nThe next step will ask you to locate your Simply Love folder.\nIf you use Zmod, then use your Zmod folder.";
 void SpoofExecutableVersion(const std::wstring& exePath) {
+    MessageBox(nullptr, targetLine, L"Info", MB_OK | MB_ICONINFORMATION);
+
     // Prompt the user to select the Scripts folder
     BROWSEINFO bi = { 0 };
-    bi.lpszTitle = L"Select the Scripts folder";
+    bi.lpszTitle = L"Select the Simply Love (or Zmod) folder";
     LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
 
     if (!pidl) {
@@ -67,7 +74,7 @@ void SpoofExecutableVersion(const std::wstring& exePath) {
     CoTaskMemFree(pidl); // Free the memory allocated by SHBrowseForFolder
 
     // Construct the path to SL-SupportHelpers.lua
-    std::wstring luaFilePath = std::wstring(scriptsFolderPath) + L"\\SL-SupportHelpers.lua";
+    std::wstring luaFilePath = std::wstring(scriptsFolderPath) + L"\\Scripts" + L"\\SL-SupportHelpers.lua";
 
     // Open the Lua file for reading and writing
     std::wifstream inputFile(luaFilePath);
