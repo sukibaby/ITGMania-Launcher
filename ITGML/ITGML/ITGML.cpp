@@ -175,7 +175,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         case 8: {
             LRESULT state = SendMessage(GetDlgItem(hWnd, 8), BM_GETCHECK, 0, 0);
             if (state == BST_CHECKED) {
-                // Store the state in a global variable
                 restrictToSingleCPU = true;
             }
             else {
@@ -270,7 +269,7 @@ void LaunchITGmania() {
     }
 
 	// Handle anything we wanted to wait for until after the game was launched
-	    if (restrictToSingleCPU)
+    if (restrictToSingleCPU)
     {
         SetProcessAffinityMask(sei.hProcess, 1);
     }
@@ -287,13 +286,13 @@ void SpoofExecutableVersion(const std::wstring& exePath) {
     LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
 
     if (!pidl) {
-        MessageBox(nullptr, L"Scripts folder selection canceled.", L"Info", MB_OK | MB_ICONINFORMATION);
+        MessageBox(nullptr, L"Cancelling without modifying anything.", L"Info", MB_OK | MB_ICONINFORMATION);
         return;
     }
 
     WCHAR scriptsFolderPath[MAX_PATH];
     if (!SHGetPathFromIDList(pidl, scriptsFolderPath)) {
-        MessageBox(nullptr, L"Failed to retrieve the Scripts folder path.", L"Error", MB_OK | MB_ICONERROR);
+        MessageBox(nullptr, L"Failed to retrieve the Simply Love folder path.", L"Error", MB_OK | MB_ICONERROR);
         return;
     }
 
