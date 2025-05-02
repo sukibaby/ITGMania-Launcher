@@ -25,6 +25,14 @@
 #define CHECKBOX_HEIGHT 30
 #define CHECKBOX_SPACING 10
 
+constexpr DWORD DWORD_FALSE = 0;
+constexpr DWORD DWORD_TRUE = 1;
+bool restrictToSingleCPU = false;
+bool priorityBooster = false;
+DWORD priorityBoosterValue = DWORD_FALSE;
+DWORD restrictToSingleCPUValue = DWORD_FALSE;
+DWORD dataSize = sizeof(DWORD);
+
 /*****************************************************************/
 /************************** Entry Point **************************/
 /*****************************************************************/
@@ -81,6 +89,8 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	hInst = hInstance;
 
+	LoadSettingsFromRegistry();
+
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, 250, 350,
 		nullptr, nullptr, hInstance, nullptr);
@@ -93,6 +103,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	GetClientRect(hWnd, &rect);
 	int centerX = (rect.right - rect.left) / 2;
 
+	// Create buttons
 	CreateWindowW(L"BUTTON", L"Browse for Executable",
 		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
 		centerX - (BUTTON_WIDTH / 2), 50,
@@ -111,8 +122,23 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 		BUTTON_WIDTH, BUTTON_HEIGHT,
 		hWnd, (HMENU)CMD_PATCH_SL_VER, hInstance, nullptr);
 
-	CreateCheckbox(hWnd, hInstance, CMD_BOOST_PRIORITY, getYPosition(), L"Boost game priority");
-	CreateCheckbox(hWnd, hInstance, CMD_RESTRICT_CPU, getYPosition(), L"Restrict to single CPU");
+	// Create checkboxes
+	HWND hBoostPriorityCheckbox = CreateWindowW(L"BUTTON", L"Boost game priority",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX,
+		(250 - CHECKBOX_WIDTH) / 2, getYPosition(),
+		CHECKBOX_WIDTH, CHECKBOX_HEIGHT,
+		hWnd, (HMENU)CMD_BOOST_PRIORITY, hInstance, nullptr);
+
+	HWND hRestrictCPUCheckbox = CreateWindowW(L"BUTTON", L"Restrict to single CPU",
+		WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_AUTOCHECKBOX,
+		(250 - CHECKBOX_WIDTH) / 2, getYPosition(),
+		CHECKBOX_WIDTH, CHECKBOX_HEIGHT,
+		hWnd, (HMENU)CMD_RESTRICT_CPU, hInstance, nullptr);
+
+	// Set the initial state of the checkboxes based on the loaded settings
+	SendMessage(hBoostPriorityCheckbox, BM_SETCHECK, priorityBooster ? BST_CHECKED : BST_UNCHECKED, 0);
+	SendMessage(hRestrictCPUCheckbox, BM_SETCHECK, restrictToSingleCPU ? BST_CHECKED : BST_UNCHECKED, 0);
+
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
@@ -160,8 +186,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			LaunchITGmania();
 			break;
 		case CMD_BOOST_PRIORITY: {
-			LRESULT state = SendMessage(GetDlgItem(hWnd, 6), BM_GETCHECK, 0, 0);
-			selectedPriority = (state == BST_CHECKED) ? REALTIME_PRIORITY_CLASS : NORMAL_PRIORITY_CLASS;
+			LRESULT state = SendMessage(GetDlgItem(hWnd, CMD_BOOST_PRIORITY), BM_GETCHECK, 0, 0);
+			priorityBooster = (state == BST_CHECKED);
+			selectedPriority = priorityBooster ? REALTIME_PRIORITY_CLASS : NORMAL_PRIORITY_CLASS;
 			break;
 		}
 		case CMD_PATCH_SL_VER:
@@ -173,19 +200,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			}
 			break;
 		case CMD_RESTRICT_CPU: {
-			LRESULT state = SendMessage(GetDlgItem(hWnd, 8), BM_GETCHECK, 0, 0);
-			if (state == BST_CHECKED) {
-				restrictToSingleCPU = true;
-			}
-			else {
-				restrictToSingleCPU = false;
-			}
+			LRESULT state = SendMessage(GetDlgItem(hWnd, CMD_RESTRICT_CPU), BM_GETCHECK, 0, 0);
+			restrictToSingleCPU = (state == BST_CHECKED);
 			break;
 		}
 		default:
 			MessageBox(hWnd, L"Unknown command.", L"Error", MB_OK | MB_ICONERROR);
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
+
+		HKEY hKey;
+		if (RegCreateKeyEx(HKEY_CURRENT_USER, REGISTRY_KEY, 0, nullptr, 0, KEY_WRITE, nullptr, &hKey, nullptr) == ERROR_SUCCESS) {
+			DWORD priorityBoosterValue = priorityBooster ? 1 : 0;
+			DWORD restrictToSingleCPUValue = restrictToSingleCPU ? 1 : 0;
+
+			RegSetValueEx(hKey, L"PriorityBooster", 0, REG_DWORD, reinterpret_cast<const BYTE*>(&priorityBoosterValue), sizeof(priorityBoosterValue));
+			RegSetValueEx(hKey, L"RestrictToSingleCPU", 0, REG_DWORD, reinterpret_cast<const BYTE*>(&restrictToSingleCPUValue), sizeof(restrictToSingleCPUValue));
+
+			RegCloseKey(hKey);
+		}
+		else {
+			MessageBox(hWnd, L"Failed to save settings to the registry.", L"Error", MB_OK | MB_ICONERROR);
+		}
+
 		break;
 	}
 
@@ -351,4 +388,21 @@ void CreateCheckbox(HWND hWnd, HINSTANCE hInstance, int id, int yOffset, LPCWSTR
 int getYPosition() {
 	static int initialOffset = 155;
 	return initialOffset += 30;
+}
+
+void LoadSettingsFromRegistry() {
+	HKEY hKey;
+	if (RegOpenKeyEx(HKEY_CURRENT_USER, REGISTRY_KEY, 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
+		// Read PriorityBooster value
+		if (RegQueryValueEx(hKey, L"PriorityBooster", nullptr, nullptr, reinterpret_cast<LPBYTE>(&priorityBoosterValue), &dataSize) == ERROR_SUCCESS) {
+			priorityBooster = (priorityBoosterValue == DWORD_TRUE);
+		}
+
+		// Read RestrictToSingleCPU value
+		if (RegQueryValueEx(hKey, L"RestrictToSingleCPU", nullptr, nullptr, reinterpret_cast<LPBYTE>(&restrictToSingleCPUValue), &dataSize) == ERROR_SUCCESS) {
+			restrictToSingleCPU = (restrictToSingleCPUValue == DWORD_TRUE);
+		}
+
+		RegCloseKey(hKey);
+	}
 }

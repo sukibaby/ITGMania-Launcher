@@ -24,12 +24,12 @@ WCHAR szTitle[MAX_LOADSTRING];
 WCHAR szWindowClass[MAX_LOADSTRING];
 WCHAR selectedExePath[MAX_PATH] = L"";
 int selectedPriority = NORMAL_PRIORITY_CLASS;
-bool restrictToSingleCPU = false;
 
 // Function Declarations
 int getYPosition();
 void CreateCheckbox(HWND hWnd, HINSTANCE hInstance, int id, int yPos, LPCWSTR text);
 void SpoofExecutableVersion(const std::wstring& exePath);
+void LoadSettingsFromRegistry();
 
 // Entry Point
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow);
