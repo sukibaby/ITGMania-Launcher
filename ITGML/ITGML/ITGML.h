@@ -1,9 +1,8 @@
 // ITGML.h : Header file
 
-#pragma once
-
 #include "resource.h"
 #include <windows.h>
+#include "RegistryAccess.h"
 #include <string>
 
 // Case Identifiers. UINT_PTR is used for HMENU compatibility
@@ -14,8 +13,6 @@ constexpr UINT_PTR CMD_PATCH_SL_VER = 7;       // Patch SL version check
 constexpr UINT_PTR CMD_RESTRICT_CPU = 8;       // Restrict to single CPU
 
 // Constants
-#define REGISTRY_KEY L"SOFTWARE\\ITGML"
-#define REGISTRY_VALUE_NAME L"ExecutablePath"
 #define MAX_LOADSTRING 100
 #define BUTTON_WIDTH 200
 #define BUTTON_HEIGHT 30
