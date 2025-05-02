@@ -55,7 +55,6 @@ LPCWSTR targetLine = L"This will patch out the version check in any Simply Love 
 void SpoofExecutableVersion(const std::wstring& exePath) {
     MessageBox(nullptr, targetLine, L"Info", MB_OK | MB_ICONINFORMATION);
 
-    // Prompt the user to select the Scripts folder
     BROWSEINFO bi = { 0 };
     bi.lpszTitle = L"Select the Simply Love (or Zmod) folder";
     LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
@@ -65,13 +64,14 @@ void SpoofExecutableVersion(const std::wstring& exePath) {
         return;
     }
 
+	// this used to be the scripts folder, but it is now the simply love folder
     WCHAR scriptsFolderPath[MAX_PATH];
     if (!SHGetPathFromIDList(pidl, scriptsFolderPath)) {
         MessageBox(nullptr, L"Failed to retrieve the Scripts folder path.", L"Error", MB_OK | MB_ICONERROR);
         return;
     }
 
-    CoTaskMemFree(pidl); // Free the memory allocated by SHBrowseForFolder
+    CoTaskMemFree(pidl);
 
     // Construct the path to SL-SupportHelpers.lua
     std::wstring luaFilePath = std::wstring(scriptsFolderPath) + L"\\Scripts" + L"\\SL-SupportHelpers.lua";
@@ -87,7 +87,7 @@ void SpoofExecutableVersion(const std::wstring& exePath) {
     std::wstring line;
     bool lineModified = false;
 
-    // Read the file line by line and modify the specific line
+    // Detect the line to modify
     while (std::getline(inputFile, line)) {
         if (line.find(L"local MinimumVersion") != std::wstring::npos) {
             line = L"local MinimumVersion = {0, 0, 1}";
@@ -98,12 +98,12 @@ void SpoofExecutableVersion(const std::wstring& exePath) {
 
     inputFile.close();
 
+    // line is modified (or not), cleanup
     if (!lineModified) {
         MessageBox(nullptr, L"Target line not found in SL-SupportHelpers.lua.", L"Error", MB_OK | MB_ICONERROR);
         return;
     }
 
-    // Write the modified content back to the file
     std::wofstream outputFile(luaFilePath, std::ios::trunc);
     if (!outputFile.is_open()) {
         MessageBox(nullptr, L"Failed to open SL-SupportHelpers.lua for writing.", L"Error", MB_OK | MB_ICONERROR);
@@ -149,8 +149,7 @@ void BrowseForExecutable(HWND hWnd) {
 }
 
 void LaunchITGmania() {
-    // Check the registry for the executable path
-    HKEY hKey;
+    HKEY hKey; // Check the registry for the executable path
     if (RegOpenKeyEx(HKEY_CURRENT_USER, REGISTRY_KEY, 0, KEY_READ, &hKey) == ERROR_SUCCESS) {
         DWORD bufferSize = sizeof(selectedExePath);
         if (RegQueryValueEx(hKey, REGISTRY_VALUE_NAME, nullptr, nullptr, (LPBYTE)selectedExePath, &bufferSize) != ERROR_SUCCESS) {
@@ -327,19 +326,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     {
         int wmId = LOWORD(wParam);
         switch (wmId) {
-        case 1:
+		case 1: // "Browse for Executable" button
             BrowseForExecutable(hWnd);
             break;
-        case 2:
+		case 2: // "Launch ITGmania" button
             LaunchITGmania();
             break;
-        case 6:
+		case 6: // "Boost game priority" checkbox
         {
             LRESULT state = SendMessage(GetDlgItem(hWnd, 6), BM_GETCHECK, 0, 0);
             selectedPriority = (state == BST_CHECKED) ? REALTIME_PRIORITY_CLASS : NORMAL_PRIORITY_CLASS;
             break;
         }
-        case 7: // Handle "Patch SL ver. check" button
+        case 7: // "Patch SL ver. check" button
             if (wcslen(selectedExePath) > 0) {
                 SpoofExecutableVersion(selectedExePath);
             }
@@ -347,7 +346,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 MessageBox(hWnd, L"Please select an executable first.", L"Error", MB_OK | MB_ICONERROR);
             }
             break;
-        default:
+        default: 
 			MessageBox(hWnd, L"Unknown command.", L"Error", MB_OK | MB_ICONERROR);
             return DefWindowProc(hWnd, message, wParam, lParam);
         }
