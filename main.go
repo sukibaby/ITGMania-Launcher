@@ -1,3 +1,16 @@
+// ITGmania Update Checker
+//
+// This program does the following things:
+// 1. Checks for the latest release of ITGmania on GitHub.
+// 2. If a newer version is available, it shows a dialog prompting the user to
+//    visit the GitHub releases page.
+// 3. Launches the game.
+//
+// The methods used to launch the game and show the dialog are platform-specific.
+//
+// NOTE: Be sure to compile the Windows binary with the `-ldflags "-H windowsgui"`
+// flag to avoid a console window from appearing.
+
 package main
 
 import (

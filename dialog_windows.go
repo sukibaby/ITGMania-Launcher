@@ -1,5 +1,8 @@
 //go:build windows
 
+// NOTE: Be sure to compile the Windows binary with the `-ldflags "-H windowsgui"` flag
+// to avoid a console window from appearing at launch.
+
 package main
 
 import (
