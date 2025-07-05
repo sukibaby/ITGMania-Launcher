@@ -20,17 +20,19 @@ func CheckForLatestGitHubRelease() (string, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/latest", owner, repo)
 	resp, err := http.Get(url)
 	if err != nil {
-		return "", fmt.Errorf("failed to fetch latest release: %v", err)
+		return "", fmt.Errorf("ITGmania updater failed to fetch latest release: %v", err)
 	}
+
+	// Close the HTTP response body
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("unexpected status code: %d", resp.StatusCode)
+		return "", fmt.Errorf("ITGmania updater encountered an unexpected status code when checking for updates: %d", resp.StatusCode)
 	}
 
 	var release GitHubRelease
 	if err := json.NewDecoder(resp.Body).Decode(&release); err != nil {
-		return "", fmt.Errorf("failed to parse response: %v", err)
+		return "", fmt.Errorf("ITGmania updater failed to parse response: %v", err)
 	}
 
 	return release.TagName, nil
