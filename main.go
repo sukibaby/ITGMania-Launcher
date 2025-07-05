@@ -42,5 +42,5 @@ func main() {
 		launchTarget()
 		return
 	}
-	PromptForUpdate(latestVersion)
+	showUpdateDialog(latestVersion)
 }
