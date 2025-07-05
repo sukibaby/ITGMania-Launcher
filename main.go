@@ -16,7 +16,7 @@ type GitHubRelease struct {
 	TagName string `json:"tag_name"`
 }
 
-func getLatestRelease() (string, error) {
+func CheckForLatestGitHubRelease() (string, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/latest", owner, repo)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -37,10 +37,10 @@ func getLatestRelease() (string, error) {
 }
 
 func main() {
-	latestVersion, err := getLatestRelease()
+	latestVersion, err := CheckForLatestGitHubRelease()
 	if err != nil {
 		launchTarget()
 		return
 	}
-	showUpdateDialog(latestVersion)
+	PromptForUpdate(latestVersion)
 }
