@@ -12,12 +12,13 @@ import (
 func showUpdateDialog(latestVersion string) {
 	text := fmt.Sprintf("A new version (%s) is available!\nGo to GitHub?", latestVersion)
 	caption := "Update Available"
+	url := fmt.Sprintf("https://github.com/%s/%s/releases/latest", owner, repo)
 
 	ret := messageBox(text, caption, 0x00000001)
 
 	// ret will be 1 if the user clicked OK
 	if ret == 1 {
-		exec.Command("rundll32", "url.dll,FileProtocolHandler", "https://github.com/itgmania/itgmania/releases/latest").Start()
+		exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
 	}
 }
 
